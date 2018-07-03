@@ -20,14 +20,12 @@ public class HttpRequest {
             conn.setRequestProperty("Authorization", "Bearer " + token);
             int status = conn.getResponseCode();
             if (status != 200) {
-                throw new IOException("Could not reach authentication servers!");
+                throw new IllegalAccessException("Invalid token!");
             }
             String data = processResponse(conn);
             conn.disconnect();
             return data;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IllegalAccessException | IOException e) { }
         return null;
     }
 

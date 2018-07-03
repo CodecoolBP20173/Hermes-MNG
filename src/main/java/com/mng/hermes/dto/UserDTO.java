@@ -16,6 +16,25 @@ public class UserDTO {
         this.givenName = user.getGivenName();
         this.familyName = user.getFamilyName();
         this.pictureUrl = user.getPicture();
+    }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 }
