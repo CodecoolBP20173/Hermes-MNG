@@ -25,6 +25,17 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private Set<Message> messages;
 
+    public User(String email, String nickName, String introduction, String givenName, String familyName, String pictureUrl, Set<Room> managedRooms, Set<Message> messages) {
+        this.email = email;
+        this.nickName = nickName;
+        this.introduction = introduction;
+        this.givenName = givenName;
+        this.familyName = familyName;
+        this.pictureUrl = pictureUrl;
+        this.managedRooms = managedRooms;
+        this.messages = messages;
+    }
+
     public int getId() {
         return id;
     }
