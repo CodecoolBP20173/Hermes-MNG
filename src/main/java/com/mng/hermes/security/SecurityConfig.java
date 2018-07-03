@@ -16,10 +16,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value(value = "${auth0.apiAudience}")
-    private String apiAudience;
-    @Value(value = "${auth0.issuer}")
-    private String issuer;
+    private String apiAudience = System.getenv("AUDIENCE");
+    private String issuer = System.getenv("ISSUER");
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
