@@ -30,4 +30,28 @@ public class Room {
                 ", admins=" + admins +
                 '}';
     }
+
+    public Room() {
+    }
+
+    public Room(String name, Set<User> admins) {
+        this.name = name;
+        this.admins = admins;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAdmins(Set<User> admins) {
+        this.admins = admins;
+    }
 }
