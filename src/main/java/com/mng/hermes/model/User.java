@@ -1,6 +1,7 @@
 package com.mng.hermes.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "users")
@@ -17,21 +18,25 @@ public class User {
     private String introduction;
     private String givenName;
     private String familyName;
-    private String pictureUrl;
+    private String picture;
+    private String token;
 
     @ManyToMany
-    private Set<Room> managedRooms;
+    private Set<Room> managedRooms = new HashSet<>();
 
     @OneToMany(mappedBy = "owner")
-    private Set<Message> messages;
+    private Set<Message> messages = new HashSet<>();
 
-    public User(String email, String nickName, String introduction, String givenName, String familyName, String pictureUrl, Set<Room> managedRooms, Set<Message> messages) {
+    public User() {
+    }
+
+    public User(String email, String nickName, String introduction, String givenName, String familyName, String picture, Set<Room> managedRooms, Set<Message> messages) {
         this.email = email;
         this.nickName = nickName;
         this.introduction = introduction;
         this.givenName = givenName;
         this.familyName = familyName;
-        this.pictureUrl = pictureUrl;
+        this.picture = picture;
         this.managedRooms = managedRooms;
         this.messages = messages;
     }
@@ -84,12 +89,36 @@ public class User {
         this.familyName = familyName;
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public Set<Room> getManagedRooms() {
+        return managedRooms;
+    }
+
+    public void setManagedRooms(Set<Room> managedRooms) {
+        this.managedRooms = managedRooms;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
@@ -101,9 +130,8 @@ public class User {
                 ", introduction='" + introduction + '\'' +
                 ", givenName='" + givenName + '\'' +
                 ", familyName='" + familyName + '\'' +
-                ", pictureUrl='" + pictureUrl + '\'' +
-                ", managedRooms=" + managedRooms +
-                ", messages=" + messages +
+                ", picture='" + picture + '\'' +
+                ", token=" + token +
                 '}';
     }
 }
