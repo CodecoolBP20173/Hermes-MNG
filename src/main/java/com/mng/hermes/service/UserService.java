@@ -61,4 +61,15 @@ public class UserService {
         }
         return userInDb;
     }
+
+    public void updateProfile(String nickName, String introduction) {
+        currentUser.setNickName(nickName);
+        currentUser.setIntroduction(introduction);
+        User userInDb = userRepository.findById(currentUser.getId()).orElse(null);
+        if (userInDb != null) {
+            userInDb.setNickName(nickName);
+            userInDb.setIntroduction(introduction);
+            userRepository.flush();
+        }
+    }
 }

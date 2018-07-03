@@ -9,18 +9,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> validateUser(@RequestHeader(value="Authorization") String auth){
+    @PostMapping(value = "/login")
+    public ResponseEntity<UserDTO> validateUser(@RequestHeader(value = "Authorization") String auth){
         try {
             User user = userService.loginUser(auth);
             return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
         } catch (IllegalAccessException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PutMapping
+    public ResponseEntity<UserDTO> updateProfile(
+            @RequestParam(value = "nickname") String nickname,
+            @RequestParam(value = "introduction") String introduction
+            ) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        userService.updateProfile(nickname, introduction);
+        return new ResponseEntity<>(new UserDTO(currentUser), HttpStatus.OK);
     }
 }
