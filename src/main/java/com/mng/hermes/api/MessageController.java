@@ -1,6 +1,7 @@
 package com.mng.hermes.api;
 
 import com.mng.hermes.model.TargetType;
+import com.mng.hermes.model.User;
 import com.mng.hermes.service.MessageService;
 import com.mng.hermes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,15 @@ public class MessageController {
 
     @GetMapping("/get-message")
     public ResponseEntity getMessages(@RequestParam("target") String target, @RequestParam("type") TargetType type) {
-        int ownerId = userService.getCurrentUser().getId();
+        User user = userService.getCurrentUser();
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
         if ((type == null && target!=null) ||(type != null && target==null) ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(messageService.getMessages(target, type, ownerId),HttpStatus.OK);
+        return new ResponseEntity(messageService.getMessages(target, type, user.getId()),HttpStatus.OK);
 
     }
 }
