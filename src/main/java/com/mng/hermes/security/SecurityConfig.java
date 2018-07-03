@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .forRS256(apiAudience, issuer)
                 .configure(http)
                 .cors().and().csrf().disable().authorizeRequests()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
     }
 
     @Bean

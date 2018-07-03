@@ -15,7 +15,7 @@ public class UserDTO {
         this.introduction = user.getIntroduction();
         this.givenName = user.getGivenName();
         this.familyName = user.getFamilyName();
-        this.pictureUrl = user.getPictureUrl();
+        this.pictureUrl = user.getPicture();
 
     }
 }
