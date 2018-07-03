@@ -20,9 +20,9 @@ public class RoomController {
         return roomRepository.findAll();
     }
 
-    @RequestMapping("/room/{name}")
-    public String joinRoom(@PathVariable String name) {
-        return "You have join the to room: " + name;
+    @RequestMapping("/rooms/{id}")
+    public String joinRoom(@PathVariable String id) {
+        return "You have join the to room: " + id;
     }
 
 }

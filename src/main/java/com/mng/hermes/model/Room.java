@@ -11,23 +11,45 @@ public class Room {
 
     private String name;
 
-    @ManyToMany
-    private Set<User> admins;
+//    @ManyToMany
+//    private Set<User> admins;
 
     public String getName() {
         return name;
     }
 
-    public Set<User> getAdmins() {
-        return admins;
-    }
+//    public Set<User> getAdmins() {
+//        return admins;
+//    }
 
     @Override
     public String toString() {
         return "Room{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", admins=" + admins +
                 '}';
     }
+
+    public Room() {
+    }
+
+    public Room(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+//    public void setAdmins(Set<User> admins) {
+//        this.admins = admins;
+//    }
 }
