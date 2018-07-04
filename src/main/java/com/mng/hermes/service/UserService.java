@@ -53,6 +53,6 @@ public class UserService {
     public void logoutUser(String token) {
         User user = userRepository.getUserByToken(token);
         user.setToken(null);
-        userRepository.save(user);
+        userRepository.flush();
     }
 }
