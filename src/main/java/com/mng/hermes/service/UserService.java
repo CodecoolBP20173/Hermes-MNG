@@ -62,6 +62,12 @@ public class UserService {
         return userInDb;
     }
 
+    public void logoutUser(String token) {
+        User user = userRepository.getUserByToken(token);
+        user.setToken(null);
+        userRepository.flush();
+    }
+
     public void updateProfile(String nickName, String introduction) {
         currentUser.setNickName(nickName);
         currentUser.setIntroduction(introduction);

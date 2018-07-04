@@ -37,4 +37,11 @@ public class UserController {
         userService.updateProfile(nickname, introduction);
         return new ResponseEntity<>(new UserDTO(currentUser), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void logoutUser(@RequestHeader(value="Authorization") String authorization){
+        userService.logoutUser(authorization);
+
+    }
 }
