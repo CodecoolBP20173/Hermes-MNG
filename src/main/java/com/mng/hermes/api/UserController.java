@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping(value = "/login")
     public ResponseEntity<UserDTO> validateUser(@RequestHeader(value = "Authorization") String auth){
@@ -25,16 +29,13 @@ public class UserController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<UserDTO> updateProfile(
-            @RequestParam(value = "nickname") String nickname,
-            @RequestParam(value = "introduction") String introduction
-            ) {
+    @PutMapping(value = "/update")
+    public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO user) {
         User currentUser = userService.getCurrentUser();
         if (currentUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        userService.updateProfile(nickname, introduction);
+        userService.updateProfile(user.getNickName(), user.getIntroduction());
         return new ResponseEntity<>(new UserDTO(currentUser), HttpStatus.OK);
     }
 
