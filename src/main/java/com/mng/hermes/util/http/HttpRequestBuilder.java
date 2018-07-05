@@ -14,7 +14,8 @@ class HttpRequestBuilder {
         try {
             URL url = new URL(endpoint);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod(method);
+            conn.setRequestMethod(method.toUpperCase());
+            return conn;
         } catch (IOException e) {
             e.printStackTrace();
         }

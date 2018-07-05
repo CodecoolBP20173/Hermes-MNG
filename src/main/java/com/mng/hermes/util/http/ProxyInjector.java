@@ -1,5 +1,6 @@
 package com.mng.hermes.util.http;
 
+import com.mng.hermes.util.HttpRequest;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.MethodAnnotationsScanner;
@@ -18,10 +19,10 @@ import java.util.Set;
 public class ProxyInjector {
 
     private Object proxy;
-    private RandomImpl ri;
+    private HttpRequest wrapperClass;
 
-    public ProxyInjector(RandomImpl ri) {
-        this.ri = ri;
+    public ProxyInjector(HttpRequest wrapperClass) {
+        this.wrapperClass = wrapperClass;
         scanClasspath();
     }
 
@@ -38,17 +39,13 @@ public class ProxyInjector {
                 proxyClasses,
                 new RequestInvoker()
         );
-//        Test test = Test.class.cast(proxy);
-//        OtherTest anotherTest = OtherTest.class.cast(proxy);
         for (Field ip : injectionPoints) {
             ip.setAccessible(true);
             try {
-                ip.set(ri, ip.getType().cast(proxy));
+                ip.set(wrapperClass, ip.getType().cast(proxy));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
-        ri.getSecretField1().getJsonWithBearer();
-        ri.getSecretField2().postJsonWithHeadersAndQueryAndBody("KEK");
     }
 }

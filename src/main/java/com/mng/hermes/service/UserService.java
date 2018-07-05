@@ -39,11 +39,11 @@ public class UserService {
     }
 
     private User fetchUser(String token) throws IllegalAccessException {
-        String data = http.fetchUserData(token);
-        if (data == null) {
+        User user = http.fetchUserData(token);
+        if (user == null) {
             throw new IllegalAccessException("Invalid token!");
         }
-        User user = gson.fromJson(data, User.class);
+        //User user = gson.fromJson(data, User.class);
         User userInDb = userRepository.getUserByEmail(user.getEmail());
         if (userInDb == null) {
             user.setToken(token);

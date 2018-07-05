@@ -1,44 +1,44 @@
 package com.mng.hermes.util;
 
+import com.mng.hermes.model.User;
+import com.mng.hermes.util.http.HttpRequestAssembler;
+import com.mng.hermes.util.http.HttpRequestSender;
+import com.mng.hermes.util.http.HttpUtil;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class HttpRequest {
 
     private static String USERINFO_ENDPOINT = "https://danielcs88.eu.auth0.com/userinfo";
+    private static String TESTER = "https://webhook.site/3ec85d6d-32ca-4bbd-b72c-bf8600ce399b";
 
-    public String fetchUserData(String token) {
-        try {
-            URL url = new URL(USERINFO_ENDPOINT);
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", "Bearer " + token);
-            int status = conn.getResponseCode();
-            if (status != 200) {
-                throw new IllegalAccessException("Invalid token!");
-            }
-            String data = processResponse(conn);
-            conn.disconnect();
-            return data;
-        } catch (IllegalAccessException | IOException e) { }
-        return null;
+    @HttpRequestAssembler
+    private HttpRequestSender http;
+
+    @HttpRequestAssembler
+    private HttpUtil httpUtil;
+
+    public User fetchUserData(String token) {
+        testHttpMagic();
+        return http.getJsonWithBearer(USERINFO_ENDPOINT, token);
     }
 
-    private String processResponse(HttpURLConnection conn) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                conn.getInputStream()
-        ));
-        String input;
-        StringBuilder sb = new StringBuilder();
-        while ((input = reader.readLine()) != null) {
-            sb.append(input);
-        }
-        return sb.toString();
+    private void testHttpMagic() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("x-test", "first header there");
+        headers.put("x-custom", "another one");
+        Map<String, String> query = new HashMap<>();
+        query.put("key", "value");
+        query.put("java hashmap init", "need a rehaul");
+        http.getWithHeadersAndQuery(TESTER, headers, query);
+        httpUtil.putWithBearerAndFragmentAndQuery(TESTER, "secrettokken", "fragmenthere", query);
     }
 
 }
