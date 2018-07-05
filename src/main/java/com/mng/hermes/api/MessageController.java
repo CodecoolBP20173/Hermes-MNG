@@ -23,7 +23,8 @@ public class MessageController {
     }
 
     @GetMapping("/get-message")
-    public ResponseEntity getMessages(@RequestParam(value = "target", required = false) String target, @RequestParam(value = "type", required = false) TargetType type) {
+    public ResponseEntity getMessages(@RequestParam(value = "target", required = false) String target,
+                                      @RequestParam(value = "type", required = false) TargetType type) {
         User user = userService.getCurrentUser();
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
