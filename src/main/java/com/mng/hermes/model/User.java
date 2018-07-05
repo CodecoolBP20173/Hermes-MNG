@@ -14,11 +14,15 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String nickName;
+
     private String introduction;
     private String givenName;
     private String familyName;
     private String picture;
+
+    @Column(length = 1024)
     private String token;
 
     @ManyToMany

@@ -16,6 +16,15 @@ public class Message {
 
     private String targetAddress;
 
+    public Message() {
+    }
+
+    public Message(User owner, String content, TargetType type, String targetAddress) {
+        this.owner = owner;
+        this.content = content;
+        this.type = type;
+        this.targetAddress = targetAddress;
+    }
 
     public int getId() {
         return id;
