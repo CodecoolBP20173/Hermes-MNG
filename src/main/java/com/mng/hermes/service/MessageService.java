@@ -20,7 +20,7 @@ public class MessageService {
 
     public List<MessageDTO> getMessages(String targetAddress, TargetType type, int ownerId) {
         if (targetAddress == null && type == null) {
-            return messageRepository.findAllByTargetAddressIsNull().stream()
+            return messageRepository.findAllByTargetAddressIsNullAndTypeIsNull().stream()
                     .map(MessageDTO::construct)
                     .collect(Collectors.toList());
         }

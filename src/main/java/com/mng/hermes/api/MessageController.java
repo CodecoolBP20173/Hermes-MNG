@@ -26,19 +26,18 @@ public class MessageController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<MessageDTO>> getMessages(
-            @RequestParam(value = "target", required = false) String target,
-            @RequestParam(value = "type", required = false) TargetType type
-    ) {
-        System.out.println(type);
+    @GetMapping("/get-message")
+    public ResponseEntity getMessages(@RequestParam(value = "target", required = false) String target,
+                                      @RequestParam(value = "type", required = false) TargetType type) {
         User user = userService.getCurrentUser();
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        if ((type == null && target != null) || (type != null && target == null)) {
+
+        if ((type == null && target!=null) ||(type != null && target==null) ) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(messageService.getMessages(target, type, user.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(messageService.getMessages(target, type, user.getId()),HttpStatus.OK);
+
     }
 }
