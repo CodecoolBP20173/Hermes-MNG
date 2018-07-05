@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api")
+@RestController
 public class MessageController {
     private final MessageService messageService;
     private final UserService userService;
@@ -23,16 +23,16 @@ public class MessageController {
     }
 
     @GetMapping("/get-message")
-    public ResponseEntity getMessages(@RequestParam("target") String target, @RequestParam("type") TargetType type) {
+    public ResponseEntity getMessages(@RequestParam(value = "target", required = false) String target, @RequestParam(value = "type", required = false) TargetType type) {
         User user = userService.getCurrentUser();
         if (user == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         if ((type == null && target!=null) ||(type != null && target==null) ) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(messageService.getMessages(target, type, user.getId()),HttpStatus.OK);
+        return new ResponseEntity<>(messageService.getMessages(target, type, user.getId()),HttpStatus.OK);
 
     }
 }

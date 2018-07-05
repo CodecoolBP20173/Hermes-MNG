@@ -11,6 +11,6 @@ import java.util.List;
 @RestResource(path = "message")
 public interface MessageRepository extends JpaRepository<Message,Integer> {
     List<Message> findAllByTargetAddressEquals(String targetAddress);
-    List<Message> findAllByTargetAddressIsNull();
+    List<Message> findAllByTargetAddressIsNullAndTypeIsNull();
     List<Message> findAllByTargetAddressEqualsAndOwnerIdEquals(String targetAddress, int ownerId);
 }
