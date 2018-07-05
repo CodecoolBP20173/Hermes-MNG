@@ -68,13 +68,13 @@ public class UserService {
         userRepository.flush();
     }
 
-    public void updateProfile(String nickName, String introduction) {
-        currentUser.setNickName(nickName);
-        currentUser.setIntroduction(introduction);
+    public void updateProfile(User user) {
+        currentUser.setNickName(user.getNickName());
+        currentUser.setIntroduction(user.getIntroduction());
         User userInDb = userRepository.findById(currentUser.getId()).orElse(null);
         if (userInDb != null) {
-            userInDb.setNickName(nickName);
-            userInDb.setIntroduction(introduction);
+            userInDb.setNickName(user.getNickName());
+            userInDb.setIntroduction(user.getIntroduction());
             userRepository.flush();
         }
     }
