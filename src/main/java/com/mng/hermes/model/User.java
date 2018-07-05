@@ -19,6 +19,8 @@ public class User {
     private String givenName;
     private String familyName;
     private String picture;
+
+    @Column(length = 1024)
     private String token;
 
     @ManyToMany

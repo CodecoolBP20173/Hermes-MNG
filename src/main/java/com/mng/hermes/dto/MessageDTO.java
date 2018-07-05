@@ -14,4 +14,12 @@ public class MessageDTO {
     public static MessageDTO construct(Message message) {
         return new MessageDTO(message.getId(), message.getContent());
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getContent() {
+        return content;
+    }
 }
