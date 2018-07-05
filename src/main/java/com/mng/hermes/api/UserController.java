@@ -22,7 +22,7 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseEntity<UserDTO> validateUser(@RequestHeader(value = "Authorization") String auth){
         try {
-            User user = userService.loginUser(auth);
+            User user = userService.getUser(auth);
             return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
         } catch (IllegalAccessException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -30,19 +30,20 @@ public class UserController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<UserDTO> updateProfile(@RequestBody User user) {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser == null) {
+    public ResponseEntity<UserDTO> updateProfile(@RequestBody User newUserData, @RequestHeader(value = "Authorization") String auth) {
+        try {
+            User currentUser = userService.getUser(auth);
+            userService.updateProfile(newUserData, currentUser);
+            return new ResponseEntity<>(new UserDTO(currentUser), HttpStatus.OK);
+        } catch (IllegalAccessException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        userService.updateProfile(user);
-        return new ResponseEntity<>(new UserDTO(currentUser), HttpStatus.OK);
+
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public void logoutUser(@RequestHeader(value="Authorization") String authorization){
-        userService.logoutUser(authorization);
-
+    public void logoutUser(@RequestHeader(value = "Authorization") String auth){
+        userService.logoutUser(auth);
     }
 }

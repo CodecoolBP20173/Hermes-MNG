@@ -4,6 +4,7 @@ import com.mng.hermes.model.User;
 
 public class UserDTO {
 
+    private int id;
     private String nickName;
     private String introduction;
     private String givenName;
@@ -11,11 +12,16 @@ public class UserDTO {
     private String pictureUrl;
 
     public UserDTO(User user) {
+        this.id = user.getId();
         this.nickName = user.getNickName();
         this.introduction = user.getIntroduction();
         this.givenName = user.getGivenName();
         this.familyName = user.getFamilyName();
         this.pictureUrl = user.getPicture();
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getNickName() {

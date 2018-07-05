@@ -21,9 +21,4 @@ public class RoomController {
         return roomService.getAllRooms();
     }
 
-    @GetMapping("/{id}")
-    public String joinRoom(@PathVariable String id) {
-        return "You have join to room: " + id;
-    }
-
 }

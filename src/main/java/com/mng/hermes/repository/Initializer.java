@@ -19,7 +19,7 @@ public class Initializer {
                 "user1 intro",
                 "John",
                 "Doe",
-                "",
+                "nice pic",
                 new HashSet<>(),
                 new HashSet<>());
         User user2 = new User(
@@ -28,21 +28,24 @@ public class Initializer {
                 "Hello!",
                 "Admin",
                 "Administras",
-                "",
+                "nice pic",
                 new HashSet<>(),
                 new HashSet<>());
+        user1.setToken("token");
+        user2.setToken("tokken");
 
         userRepository.save(user1);
         userRepository.save(user2);
         roomRepository.save(new Room("Room one", new HashSet<>()));
         roomRepository.save(new Room("Room two", new HashSet<>()));
         roomRepository.save(new Room("Room three", new HashSet<>()));
+
+        messageRepository.save(new Message(user1, "Public message from user1", null, null));
+        messageRepository.save(new Message(user2, "Public message from user2", null, null));
         messageRepository.save(new Message(user1, "Random message from user1", TargetType.ROOM, "Room one"));
         messageRepository.save(new Message(user1, "Also a message from user1", TargetType.ROOM, "Room one"));
-        messageRepository.save(new Message(user1, "Another message from user1", TargetType.ROOM, "Room one"));
         messageRepository.save(new Message(user2, "Random message from user2", TargetType.ROOM, "Room one"));
-        messageRepository.save(new Message(user2, "Also a message from user2", TargetType.ROOM, "Room one"));
-        messageRepository.save(new Message(user2, "Another message from user2", TargetType.ROOM, "Room one"));
-
+        messageRepository.save(new Message(user1, "Private from user1", TargetType.USER, "6"));
+        messageRepository.save(new Message(user2, "Private message from user2", TargetType.USER, "6"));
     }
 }
