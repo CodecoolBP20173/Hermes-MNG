@@ -18,11 +18,6 @@ public class UserDTO {
         this.pictureUrl = user.getPicture();
     }
 
-    public UserDTO(String nickName, String introduction) {
-        this.nickName = nickName;
-        this.introduction = introduction;
-    }
-
     public String getNickName() {
         return nickName;
     }

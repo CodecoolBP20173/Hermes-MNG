@@ -30,12 +30,12 @@ public class UserController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> updateProfile(@RequestBody User user) {
         User currentUser = userService.getCurrentUser();
         if (currentUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        userService.updateProfile(user.getNickName(), user.getIntroduction());
+        userService.updateProfile(user);
         return new ResponseEntity<>(new UserDTO(currentUser), HttpStatus.OK);
     }
 
