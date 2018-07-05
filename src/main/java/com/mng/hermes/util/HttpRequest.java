@@ -26,7 +26,7 @@ public class HttpRequest {
     private HttpUtil httpUtil;
 
     public User fetchUserData(String token) {
-        testHttpMagic();
+        //testHttpMagic();
         return http.getJsonWithBearer(USERINFO_ENDPOINT, token);
     }
 
