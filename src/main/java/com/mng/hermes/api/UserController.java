@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -22,27 +22,28 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseEntity<UserDTO> validateUser(@RequestHeader(value = "Authorization") String auth){
         try {
-            User user = userService.loginUser(auth);
+            User user = userService.getUser(auth);
             return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
         } catch (IllegalAccessException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
-    @PutMapping(value = "/update")
-    public ResponseEntity<UserDTO> updateProfile(@RequestBody User user) {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser == null) {
+    @PostMapping(value = "/update")
+    public ResponseEntity<UserDTO> updateProfile(@RequestBody User newUserData, @RequestHeader(value = "Authorization") String auth) {
+        try {
+            User currentUser = userService.getUser(auth);
+            userService.updateProfile(newUserData, currentUser);
+            return new ResponseEntity<>(new UserDTO(currentUser), HttpStatus.OK);
+        } catch (IllegalAccessException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        userService.updateProfile(user);
-        return new ResponseEntity<>(new UserDTO(currentUser), HttpStatus.OK);
+
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public void logoutUser(@RequestHeader(value="Authorization") String authorization){
-        userService.logoutUser(authorization);
-
+    public void logoutUser(@RequestHeader(value = "Authorization") String auth){
+        userService.logoutUser(auth);
     }
 }

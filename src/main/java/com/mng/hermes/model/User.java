@@ -14,7 +14,9 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String nickName;
+
     private String introduction;
     private String givenName;
     private String familyName;

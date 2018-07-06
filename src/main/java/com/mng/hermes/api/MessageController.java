@@ -1,21 +1,16 @@
 package com.mng.hermes.api;
 
-import com.mng.hermes.dto.MessageDTO;
 import com.mng.hermes.model.TargetType;
 import com.mng.hermes.model.User;
 import com.mng.hermes.service.MessageService;
 import com.mng.hermes.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/messages")
+@RequestMapping("/api/messages")
 public class MessageController {
 
     private final MessageService messageService;
@@ -26,18 +21,18 @@ public class MessageController {
         this.userService = userService;
     }
 
-    @GetMapping("/get-message")
+    @GetMapping
     public ResponseEntity getMessages(@RequestParam(value = "target", required = false) String target,
-                                      @RequestParam(value = "type", required = false) TargetType type) {
-        User user = userService.getCurrentUser();
-        if (user == null) {
+                                      @RequestParam(value = "type", required = false) TargetType type,
+                                      @RequestHeader(value = "Authorization") String auth) {
+        try {
+            User user = userService.getUser(auth);
+            if ((type == null && target != null) || (type != null && target == null)) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(messageService.getMessages(target, type, user.getId()), HttpStatus.OK);
+        } catch (IllegalAccessException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
-        if ((type == null && target!=null) ||(type != null && target==null) ) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(messageService.getMessages(target, type, user.getId()),HttpStatus.OK);
-
     }
 }

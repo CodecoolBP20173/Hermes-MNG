@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rooms")
+@RequestMapping("/api/rooms")
 public class RoomController {
 
     private final RoomService roomService;
@@ -19,11 +19,6 @@ public class RoomController {
     @GetMapping
     public List<Room> getRooms() {
         return roomService.getAllRooms();
-    }
-
-    @GetMapping("/{id}")
-    public String joinRoom(@PathVariable String id) {
-        return "You have join to room: " + id;
     }
 
 }

@@ -9,13 +9,11 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 @Service
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService {
 
     private UserRepository userRepository;
     private HttpRequest http;
     private Gson gson;
-    private User currentUser;
 
     public UserService(UserRepository userRepository, HttpRequest http, Gson gson) {
         this.userRepository = userRepository;
@@ -23,17 +21,12 @@ public class UserService {
         this.gson = gson;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
-    }
-
-    public User loginUser(String authHeader) throws IllegalAccessException {
+    public User getUser(String authHeader) throws IllegalAccessException {
         String token = processHeader(authHeader);
         User user = userRepository.getUserByToken(token);
         if (user == null) {
             user = fetchUser(token);
         }
-        currentUser = user;
         return user;
     }
 
@@ -46,11 +39,11 @@ public class UserService {
     }
 
     private User fetchUser(String token) throws IllegalAccessException {
-        String data = http.fetchUserData(token);
-        if (data == null) {
+        User user = http.fetchUserData(token);
+        if (user == null) {
             throw new IllegalAccessException("Invalid token!");
         }
-        User user = gson.fromJson(data, User.class);
+        //User user = gson.fromJson(data, User.class);
         User userInDb = userRepository.getUserByEmail(user.getEmail());
         if (userInDb == null) {
             user.setToken(token);
@@ -62,20 +55,20 @@ public class UserService {
         return userInDb;
     }
 
-    public void logoutUser(String token) {
-        User user = userRepository.getUserByToken(token);
-        user.setToken(null);
-        userRepository.flush();
+    public void logoutUser(String authHeader) {
+        User currentUser = null;
+        try {
+            currentUser = getUser(authHeader);
+            currentUser.setToken(null);
+            userRepository.save(currentUser);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void updateProfile(User user) {
+    public void updateProfile(User user, User currentUser) {
         currentUser.setNickName(user.getNickName());
         currentUser.setIntroduction(user.getIntroduction());
-        User userInDb = userRepository.findById(currentUser.getId()).orElse(null);
-        if (userInDb != null) {
-            userInDb.setNickName(user.getNickName());
-            userInDb.setIntroduction(user.getIntroduction());
-            userRepository.flush();
-        }
+        userRepository.save(currentUser);
     }
 }
